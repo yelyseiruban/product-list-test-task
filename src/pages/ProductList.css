@@ -1,0 +1,34 @@
+/*Products*/
+.content{
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    margin: 0 5rem 0 5rem;
+
+}
+
+.one-product{
+    border: 1px solid black;
+    padding: 0.5rem;
+    margin: 10px;
+    width: 260px;
+}
+.cover{
+    width: 300px;
+}
+.bandName{
+    padding: 10px;
+    font-weight: bold;
+}
+.albumName{
+    padding: 10px;
+    width: auto;
+}
+.linkForMoreInfo{
+    position: relative;
+    top: -10px;
+    float: right;
+    padding: 10px;
+}

@@ -1,0 +1,11 @@
+.header{
+    margin: 0 5rem 0 5rem;
+    border-bottom: 1px solid black;
+}
+
+.btn-add{
+    margin-right: 0.5rem;
+}
+.btn-mass-delete{
+    margin-left: 0.5rem;
+}

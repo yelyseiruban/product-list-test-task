@@ -1,0 +1,37 @@
+.form-add{
+    margin-left: 5rem;
+}
+
+.input{
+    display: inline;
+    width: 80%;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    appearance: none;
+    border-radius: .375rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    float: right;
+}
+.switch{
+    display: inline;
+    width: 60%;
+    color: #212529;
+    background-color: #f5f5f5;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    appearance: none;
+    border-radius: .375rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    float: right;
+}
+
+.input-line{
+
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
