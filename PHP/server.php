@@ -8,7 +8,7 @@
 
     $answer = "";
 
-    $mysqli = new mysqli('mysql.db.mdbgo.com:3306','yelyseiruban_yelysei','Secret_228','yelyseiruban_sitedb');
+    $mysqli = new mysqli($_ENV['DB_HOST'],$_ENV['DB_USERNAME'],$_ENV['DB_PASSWORD'],$_ENV['DB_DATABASE']);
     if ($mysqli -> connect_errno) {
         echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
         exit();
