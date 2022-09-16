@@ -4,25 +4,37 @@
     use Database\DatabaseMySQL;
 
     require_once ('DatabaseMySQL.php');
+
+    require_once ('Product.php');
+    require_once ('ProductDVD.php');
+    require_once ('ProductBook.php');
+    require_once ('ProductFurniture.php');
+
     require_once '../config.php';
 
-    $answer = "";
+    $db = new DatabaseMySQL($_ENV['DB_HOST'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], $_ENV['DB_DATABASE']);
+    $connection = $db->getConnection();
 
-    $mysqli = new mysqli($_ENV['DB_HOST'],$_ENV['DB_USERNAME'],$_ENV['DB_PASSWORD'],$_ENV['DB_DATABASE']);
-    if ($mysqli -> connect_errno) {
-        echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
-        exit();
+    $form = json_decode($_POST['form']);
+
+    switch ($form->type){
+        case 'dvd':
+            $product = new ProductDVD($form->sku, $form->name, doubleval($form->price), $form->type, doubleval($form->size));
+            break;
+        case 'book':
+            $product = new ProductBook($form->sku, $form->name, doubleval($form->price), $form->type, $form->weight);
+            break;
+        case 'furniture':
+            $product = new ProductFurniture($form->sku, $form->name, doubleval($form->price), $form->type, floatval($form->height), floatval($form->width), floatval($form->length));
+            break;
     }
-    // Perform query
-    if ($result = $mysqli -> query("SELECT * FROM product", MYSQLI_USE_RESULT)) {
 
-        while ($obj = $result->fetch_object()) {
-            $answer .= "$obj->id, $obj->sku, $obj->price, $obj->type\n";
-        }
+    $error = $product->addProduct($connection);
+    if ($error){
+        echo $error;
     }
 
-    echo $answer;
 
-    $mysqli -> close();
+    $connection -> close();
     
 ?>

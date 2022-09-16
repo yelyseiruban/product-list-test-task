@@ -1,18 +1,40 @@
 <?php
 
-abstract class Product
+class Product
 {
     protected $sku;
     protected $name;
     protected $price;
-    protected $productType;
+    protected $type;
+    protected $error = "";
 
-    public function __construct($sku, $name, $price, $productType)
+    public function __construct($sku, $name, $price, $type)
     {
         $this->sku = $sku;
         $this->name = $name;
         $this->price = $price;
-        $this->productType = $productType;
+        $this->type = $type;
+    }
+
+    public function addProduct($connection){
+        if (in_array([$this->sku], $connection->query("SELECT sku FROM product")->fetch_all())){
+            $this->error .= "Product with sku: $this->sku exists";
+            return false; // if that sku exists
+        }
+        $connection->query("INSERT INTO product (
+                     sku,
+                     product_name,
+                     price,
+                     type
+                     ) VALUES (
+                     '$this->sku',
+                     '$this->name',
+                     $this->price,
+                     '$this->type'
+                     );");
+
+        return $connection->query("SELECT id FROM product ORDER BY id DESC LIMIT 1;")->fetch_object()->id;
+
     }
 
     public function getSku()
@@ -32,7 +54,7 @@ abstract class Product
 
     public function getProductType()
     {
-        return $this->productType;
+        return $this->type;
     }
 
     public function setSku($sku)
@@ -50,9 +72,9 @@ abstract class Product
         $this->price = $price;
     }
 
-    public function setProductType($productType)
+    public function setProductType($type)
     {
-        $this->productType = $productType;
+        $this->type = $type;
     }
 
 }

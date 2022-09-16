@@ -3,6 +3,7 @@ import React from "react";
 export default function BookForm(props){
     return(
         <div id='Book' className='product-description'>
+            <p>Please provide book's weight in KG</p>
             <div className="input-line">
                 <label htmlFor="weight"> Weight (KG) </label>
                 <input

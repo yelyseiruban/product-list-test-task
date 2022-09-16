@@ -3,6 +3,7 @@ import React from "react";
 export default function DvdForm(props){
     return(
         <div id='DVD' className='product-description'>
+            <p>Please provide DVD size information in MB</p>
             <div className="input-line">
                 <label htmlFor="size"> Size (MB) </label>
                 <input

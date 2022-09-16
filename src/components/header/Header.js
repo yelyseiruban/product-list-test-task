@@ -1,6 +1,5 @@
 import React from "react";
 import './Header.css'
-import $ from "jquery"
 import {useNavigate} from "react-router-dom";
 
 function Header(props) {
@@ -13,7 +12,7 @@ function Header(props) {
 
                     <button type="button" className="btn btn-add border btn-light shadow-sm"
                             onClick={()=> {navigate('/add-product')}}>ADD</button>
-                    <button type="button" className="btn btn-mass-delete border btn-light shadow-sm">MASS DELETE</button>
+                    <button type="submit" id="delete-product-btn" className="btn btn-mass-delete delete-product-btn border btn-light shadow-sm">MASS DELETE</button>
                 </div>
             );
         }
@@ -21,7 +20,7 @@ function Header(props) {
             return (
                 <div className="col-md-3 text-end">
                     <button type="submit" className="btn btn-add border btn-light shadow-sm">Save</button>
-                    <button type="button" className="btn btn-mass-delete border btn-light shadow-sm" onClick={()=> navigate('/')}>Cancel</button>
+                    <button type="button" className="btn border btn-light shadow-sm" onClick={()=> navigate('/')}>Cancel</button>
                 </div>
             );
         }

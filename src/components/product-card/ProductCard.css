@@ -1,0 +1,13 @@
+.one-product{
+    border: 1px solid black;
+    padding: 0.5rem 0.5rem 40px 0.5rem;
+    margin: 10px;
+    width: 300px;
+}
+.description > p{
+    margin: 0;
+}
+
+.description{
+    text-align: center;
+}

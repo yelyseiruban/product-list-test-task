@@ -3,6 +3,7 @@ import React from "react";
 export default function FurnitureForm(props){
     return(
         <div id='Furniture' className='product-description'>
+            <p>Please provide dimensions in HxWxL format</p>
             <div className="input-line">
                 <label htmlFor="height"> Height (CM) </label>
                 <input

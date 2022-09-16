@@ -35,3 +35,25 @@
     font-weight: 400;
     line-height: 1.5;
 }
+
+.product-description{
+    margin-top: 20px;
+}
+.product-description > p{
+    margin: 0;
+}
+
+.errorMessages{
+    background-color: rgba(255, 160, 166, 0.44);
+    border: 1px solid #ff9c9c;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.errorMessages > li{
+    margin-left: 15px;
+}
+
+.errorMessages > li::marker{
+    color: #da4545;
+}

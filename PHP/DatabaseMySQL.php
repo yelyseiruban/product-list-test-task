@@ -1,8 +1,6 @@
 <?php
 namespace Database;
 
-use PDO;
-use PDOException;
 use mysqli;
 
 class DatabaseMySQL
@@ -15,25 +13,36 @@ class DatabaseMySQL
     private $connection;
     private $error = "";
 
-    public function __construct($host, $database, $username, $password)
+    public function __construct($host, $username, $password, $database)
     {
         $this->host = $host;
-        $this->database = $database;
         $this->username = $username;
         $this->password = $password;
+        $this->database = $database;
     }
 
     public function getConnection(){
-        $this->connection = new \mysqli("mysql://yelyseiruban_yelysei:Secret_228@mysql.db.mdbgo.com:3306/yelyseiruban_sitedb");
+        $this->connection = new mysqli($this->host, $this->username, $this->password, $this->database);
         if ($this->connection -> connect_errno) {
             echo "Failed to connect to MySQL: " . $this->connection -> connect_error;
             exit();
         }
+        return $this->connection;
     }
 
-    public function getConnectionString(){
-        return "mysql:host=$this->host;dbname=$this->database";
+    public function massDelete($checked){
+        foreach ($checked as $element){
+            $id = $element->id;
+            $dbName = $element->type;
+            $this->connection -> query("DELETE FROM $dbName WHERE product = $id");
+            $this->connection -> query("DELETE FROM product WHERE id = $id");
+        }
     }
+
+    public function close(){
+        $this->connection->close();
+    }
+
 
 
 

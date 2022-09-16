@@ -1,17 +1,15 @@
 <?php
 
-
-class ProductDVD extends Product
+class ProductBook extends Product
 {
-    private $size;
-    private const DBNAME = 'dvd';
+    private $weight;
+    private const DBNAME = 'book';
 
-    public function __construct($sku, $name, $price, $productType, $size)
+    public function __construct($sku, $name, $price, $productType, $weight)
     {
         parent::__construct($sku, $name, $price, $productType);
-        $this->size = $size;
+        $this->weight = $weight;
     }
-
 
 
 
@@ -19,12 +17,12 @@ class ProductDVD extends Product
     {
         if ($id = parent::addProduct($connection)) {
             //if product with that sku does not exist
-            $connection->query("INSERT INTO dvd (
+            $connection->query("INSERT INTO book (
                      product,
-                     size
+                     weight
                      ) VALUES (
                      '$id',
-                     $this->size
+                     $this->weight
                      );");
         }
         else{
@@ -34,14 +32,15 @@ class ProductDVD extends Product
     }
 
 
-    public function getSize()
+
+    public function getWeight()
     {
-        return $this->size;
+        return $this->weight;
     }
 
-    public function setSize($size)
+    public function setWeight($weight)
     {
-        $this->size = $size;
+        $this->weight = $weight;
     }
 
 }

@@ -1,18 +1,26 @@
 import React from "react";
 import './ProductAdd.css'
 import Header from "../components/header/Header";
+import Footer from "../footer/Footer";
 import DvdForm from "../components/additional-form/DvdForm";
 import FurnitureForm from "../components/additional-form/FurnitureForm";
 import BookForm from "../components/additional-form/BookForm";
+import {validateDefaultForm, validateDVDForm, validateBookForm, validateFurnitureForm} from "../validation";
 import $ from "jquery";
+import {useNavigate} from "react-router-dom";
+
+import {nanoid} from "nanoid";
 
 export default function ProductAdd(){
+    let navigate = useNavigate();
+    /*Errors*/
+    const [messageErrors, setMessageErrors] = React.useState([]);
     /*Main form*/
     const [mainFormData, setMainFormData] = React.useState({
         sku: "",
         name: "",
         price: "",
-        typeSwitch: "DVD",
+        type: "dvd",
         size: "",
         height: "",
         width: "",
@@ -22,6 +30,16 @@ export default function ProductAdd(){
 
     const [result, setResult] = React.useState('')
 
+    let productDescription;
+        if (mainFormData.type === 'dvd'){
+            productDescription = <DvdForm handleCooperation={handleChange} formData={mainFormData}/>
+        }
+        else if (mainFormData.type === 'furniture'){
+           productDescription = <FurnitureForm handleCooperation={handleChange} formData={mainFormData}/>
+        }
+        else if (mainFormData.type === 'book'){
+            productDescription = <BookForm handleCooperation={handleChange} formData={mainFormData}/>
+        }
 
     function handleChange(event){
         const {name, value} = event.target
@@ -31,35 +49,49 @@ export default function ProductAdd(){
             [name]: value
         }))
 
-        console.log(mainFormData)
     }
-
-    let productDescription;
-        if (mainFormData.typeSwitch==='DVD'){
-            productDescription = <DvdForm handleCooperation={handleChange} formData={mainFormData}/>
-        }
-        else if (mainFormData.typeSwitch==='Furniture'){
-           productDescription = <FurnitureForm handleCooperation={handleChange} formData={mainFormData}/>
-        }
-        else if (mainFormData.typeSwitch==='Book'){
-            productDescription = <BookForm handleCooperation={handleChange} formData={mainFormData}/>
-        }
-
 
     function handleSubmit(event) {
         event.preventDefault();
         const form = $(event.target);
-        $.ajax({
-            type: "POST",
-            url: form.attr("action"),
-            data: form.serialize(),
-            success(data){
-                setResult(data)
-            }
-        })
+
+        let errors = [];
+        errors = validateDefaultForm(mainFormData.sku, mainFormData.name, mainFormData.price, errors);
+        switch (mainFormData.type){
+            case 'dvd':
+                errors = validateDVDForm(mainFormData.size, errors);
+                break;
+            case 'book':
+                errors = validateBookForm(mainFormData.weight, errors);
+                break;
+            case 'furniture':
+                errors = validateFurnitureForm(mainFormData.height, mainFormData.width, mainFormData.length, errors);
+                break;
+        }
+
+        let messageErrors;
+        errors = errors.filter((x) => {return x !== ""})
+        if (errors.length > 0){
+            messageErrors = errors.map(error => <li key={nanoid()}>{error}</li>);
+            setMessageErrors(messageErrors);
+            console.log(errors);
+        }
+        else {
+            setMessageErrors(false);
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: {form: JSON.stringify(mainFormData)},
+                success(data){
+                    setResult(data)
+                }
+            })
+            navigate('/');
+
+        }
     }
-    console.log(result);
-    return(
+
+        return(
             <form
                 action="http://localhost:8000/server.php"
                 id='product_form'
@@ -106,16 +138,19 @@ export default function ProductAdd(){
 
                         <div className='input-line'>
                             <label htmlFor="productType">Type Switcher</label>
-                            <select name="typeSwitch" id="productType" className="switch" onChange={handleChange} value={mainFormData.typeSwitch}>
-                                <option value="DVD">DVD</option>
-                                <option value="Furniture">Furniture</option>
-                                <option value="Book">Book</option>
+                            <select name="type" id="productType" className="switch" onChange={handleChange} value={mainFormData.type}>
+                                <option value="dvd">DVD</option>
+                                <option value="furniture">Furniture</option>
+                                <option value="book">Book</option>
                             </select>
                         </div>
                         {productDescription}
-                    {result}
+                    {messageErrors.length > 0 && <ul className='errorMessages'>{messageErrors}</ul>}
+                    {result && <ul className='errorMessages'><li>{result}</li></ul>}
                 </div>
+                <Footer />
             </form>
+
 
     );
 }
